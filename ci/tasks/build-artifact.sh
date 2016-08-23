@@ -2,7 +2,7 @@
 set -e
 version=`cat version/number`
 
-cd lab-repo
+cd git-repo
 
 mvn clean versions:set -DnewVersion=$version
 mvn package -DskipTests=true -Djava.version=1.7

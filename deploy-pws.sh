@@ -1,13 +1,13 @@
 #!/bin/bash
 CF_APP='ActivitiExample'
 CF_APPS_DOMAIN='cfapps.io'
-ROUTE_NAME=$CF_APP
+CF_ROUTE_NAME=$CF_APP
 mvn clean package
 if [ "$?" -ne "0" ]; then
   exit $?
 fi
 
-DEPLOYED_VERSION_CMD=$(CF_COLOR=false cf routes | awk '$2=="ActivitiExample" { print $4; }' | cut -d"," -f1 | cut -d"-" -f2)
+DEPLOYED_VERSION_CMD=$(CF_COLOR=false cf routes | awk -v ROUTE_NAME="$CF_ROUTE_NAME" '$2 ~ ROUTE_NAME { print $4; }' | cut -d"," -f1 | cut -d"-" -f2)
 DEPLOYED_VERSION="$DEPLOYED_VERSION_CMD"
 echo "Deployed Version: $DEPLOYED_VERSION"
 CURRENT_VERSION="blue"
@@ -19,10 +19,10 @@ echo "Current Version: $CURRENT_VERSION"
 # push a new version and map the route
 cf cs p-mysql 100mb activiti-db
 cf p "$CF_APP-$CURRENT_VERSION"
-cf map-route "$CF_APP-$CURRENT_VERSION" $CF_APPS_DOMAIN -n $ROUTE_NAME
+cf map-route "$CF_APP-$CURRENT_VERSION" $CF_APPS_DOMAIN -n $CF_ROUTE_NAME
 if [ ! -z "$DEPLOYED_VERSION" ]; then
   # Unmap the route and delete
-  cf unmap-route "$CF_APP-$DEPLOYED_VERSION" $CF_APPS_DOMAIN -n $ROUTE_NAME
+  cf unmap-route "$CF_APP-$DEPLOYED_VERSION" $CF_APPS_DOMAIN -n $CF_ROUTE_NAME
   # Scaling down
   cf scale "$CF_APP-$DEPLOYED_VERSION" -i 1
 fi

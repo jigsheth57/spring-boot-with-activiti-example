@@ -6,10 +6,10 @@ image_resource:
   source: {repository: jigsheth57/pcfworkshop}
 
 inputs:
-  - name: lab-repo
+  - name: git-repo
 
 outputs:
   - name: build-artifact
 
 run:
-  path: lab-repo/ci/tasks/unit-test.sh
+  path: git-repo/ci/tasks/unit-test.sh

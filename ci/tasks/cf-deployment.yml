@@ -6,17 +6,18 @@ image_resource:
   source: {repository: jigsheth57/pcfworkshop}
 
 inputs:
-  - name: lab-repo
-  - name: lab-release
+  - name: git-repo
+  - name: demo-release
 
 run:
-  path: lab-repo/ci/tasks/cf-deployment.sh
+  path: git-repo/ci/tasks/cf-deployment.sh
 
 params:
-  API_ENDPOINT: {{cf-dev-api}}
-  USERNAME: {{cf-dev-username}}
-  PASSWORD: {{cf-dev-password}}
-  ORG: {{cf-dev-organization}}
-  SPACE: {{cf-dev-space}}
-  CF_APPS_DOMAIN: {{cf-dev-domain}}
-  CF_APP_NAME: timetracking
+  API_ENDPOINT:
+  USERNAME:
+  PASSWORD:
+  ORG:
+  SPACE:
+  CF_APPS_DOMAIN:
+  CF_APP_NAME:
+  CF_ROUTE_NAME:

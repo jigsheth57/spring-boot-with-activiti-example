@@ -1,24 +1,24 @@
 ---
 resources:
-- name: lab-repo
+- name: git-repo
   type: git
   source:
-    uri: https://github.com/jigsheth57/fe-time-tracking.git
+    uri: https://github.com/jigsheth57/spring-boot-with-activiti-example.git
 
 - name: version
   type: semver
   source:
     bucket: ci-pcf-workshop-artifacts
-    key: timetracking-demo-current-version
+    key: activiti-demo-current-version
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
     initial_version: 1.0.0
 
-- name: lab-release
+- name: demo-release
   type: s3
   source:
     bucket: ci-pcf-workshop-artifacts
-    regexp: fe-time-tracking-(.*).jar
+    regexp: activiti-example-(.*).jar
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
 
@@ -26,83 +26,67 @@ jobs:
 - name: unit-test
   public: true
   plan:
-  - get: lab-repo
+  - get: git-repo
     trigger: true
   - task: unit-test
-    file: lab-repo/ci/tasks/unit-test.yml
+    file: git-repo/ci/tasks/unit-test.yml
     timeout: 5m
 
 - name: build-binary
   public: true
   serial: true
   plan:
-  - get: lab-repo
+  - get: git-repo
     passed: [unit-test]
     trigger: true
   - get: version
     params: {bump: patch}
   - task: build-artifact
-    file: lab-repo/ci/tasks/build-artifact.yml
+    file: git-repo/ci/tasks/build-artifact.yml
     timeout: 5m
-  - put: lab-release
-    params: {file: build-artifact/fe-time-tracking-*.jar}
+  - put: demo-release
+    params: {file: build-artifact/activiti-example-*.jar}
   - put: version
     params: {file: version/number}
 
 - name: acceptance-tests
   plan:
   - aggregate:
-    - get: lab-release
+    - get: demo-release
       passed: [build-binary]
       trigger: true
-    - get: lab-repo
+    - get: git-repo
       passed: [build-binary]
       trigger: true
   - task: deploy-to-dev
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source: {repository: jigsheth57/pcfworkshop}
-      inputs:
-        - name: lab-repo
-        - name: lab-release
-      run:
-        path: lab-repo/ci/tasks/cf-deployment.sh
-      params:
-        API_ENDPOINT: {{cf-dev-api}}
-        USERNAME: {{cf-dev-username}}
-        PASSWORD: {{cf-dev-password}}
-        ORG: {{cf-dev-organization}}
-        SPACE: {{cf-dev-space}}
-        CF_APPS_DOMAIN: {{cf-dev-domain}}
-        CF_APP_NAME: timetracking
-        CF_ROUTE_NAME: timetracking-dev
+    file: git-repo/ci/tasks/cf-deployment.yml
+    timeout: 5m
+    params:
+      API_ENDPOINT: {{cf-dev-api}}
+      USERNAME: {{cf-dev-username}}
+      PASSWORD: {{cf-dev-password}}
+      ORG: {{cf-dev-organization}}
+      SPACE: {{cf-dev-space}}
+      CF_APPS_DOMAIN: {{cf-dev-domain}}
+      CF_APP_NAME: activitiexample
+      CF_ROUTE_NAME: activitiexample-dev
 
 - name: manual-deploy-to-prod
   plan:
   - aggregate:
-    - get: lab-release
+    - get: demo-release
       passed: [acceptance-tests]
-    - get: lab-repo
+    - get: git-repo
       passed: [acceptance-tests]
   - task: deploy-to-prod
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source: {repository: jigsheth57/pcfworkshop}
-      inputs:
-        - name: lab-repo
-        - name: lab-release
-      run:
-        path: lab-repo/ci/tasks/cf-deployment.sh
-      params:
-        API_ENDPOINT: {{cf-prod-api}}
-        USERNAME: {{cf-prod-username}}
-        PASSWORD: {{cf-prod-password}}
-        ORG: {{cf-prod-organization}}
-        SPACE: {{cf-prod-space}}
-        CF_APPS_DOMAIN: {{cf-prod-domain}}
-        CF_APP_NAME: timetracking
-        CF_ROUTE_NAME: timetracking-prod
+    file: git-repo/ci/tasks/cf-deployment.yml
+    timeout: 5m
+    params:
+      API_ENDPOINT: {{cf-prod-api}}
+      USERNAME: {{cf-prod-username}}
+      PASSWORD: {{cf-prod-password}}
+      ORG: {{cf-prod-organization}}
+      SPACE: {{cf-prod-space}}
+      CF_APPS_DOMAIN: {{cf-prod-domain}}
+      CF_APP_NAME: activitiexample
+      CF_ROUTE_NAME: activitiexample-prod

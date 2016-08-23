@@ -6,11 +6,11 @@ image_resource:
   source: {repository: jigsheth57/pcfworkshop}
 
 inputs:
-  - name: lab-repo
+  - name: git-repo
   - name: version
 
 outputs:
   - name: build-artifact
 
 run:
-  path: lab-repo/ci/tasks/build-artifact.sh
+  path: git-repo/ci/tasks/build-artifact.sh

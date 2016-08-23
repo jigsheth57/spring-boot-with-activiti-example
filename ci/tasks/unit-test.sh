@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-cd lab-repo
+cd git-repo
 
 mvn clean test -Djava.version=1.7

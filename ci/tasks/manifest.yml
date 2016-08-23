@@ -1,7 +1,10 @@
 ---
 timeout: 180
 memory: 768M
-instances: 1
+env:
+    spring.datasource.platform: mysql
+instances: 2
 applications:
- - name: timetracking
+ - name: activitiexample
    random-route: true
+   services: [ activiti-db ]
