@@ -30,7 +30,7 @@ jobs:
     trigger: true
   - task: unit-test
     file: git-repo/ci/tasks/unit-test.yml
-    timeout: 5m
+    timeout: 15m
 
 - name: build-binary
   public: true
@@ -43,7 +43,7 @@ jobs:
     params: {bump: patch}
   - task: build-artifact
     file: git-repo/ci/tasks/build-artifact.yml
-    timeout: 5m
+    timeout: 15m
   - put: demo-release
     params: {file: build-artifact/activiti-example-*.jar}
   - put: version
@@ -60,7 +60,7 @@ jobs:
       trigger: true
   - task: deploy-to-dev
     file: git-repo/ci/tasks/cf-deployment.yml
-    timeout: 5m
+    timeout: 15m
     params:
       API_ENDPOINT: {{cf-dev-api}}
       USERNAME: {{cf-dev-username}}
@@ -80,7 +80,7 @@ jobs:
       passed: [acceptance-tests]
   - task: deploy-to-prod
     file: git-repo/ci/tasks/cf-deployment.yml
-    timeout: 5m
+    timeout: 15m
     params:
       API_ENDPOINT: {{cf-prod-api}}
       USERNAME: {{cf-prod-username}}

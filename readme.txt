@@ -9,3 +9,10 @@ curl -u admin:admin -H "Content-Type: application/json" -d '{"techOk" : "true"}'
 curl -u admin:admin -H "Content-Type: application/json" -d '{"financialOk" : "false"}' https://activitiexample.cfapps.io/completeFinancialNegotiation/2501
 
 curl -u admin:admin https://activitiexample.cfapps.io/tasks/2501
+
+
+# Deploy via Concourse
+cd ci
+fly login -t lite http://192.168.100.4:8080 -k
+fly sp -t lite -c pipeline.yml -p activiti-example -l credentials.yml -n
+fly up -t lite -p activiti-example
