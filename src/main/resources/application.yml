@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+logging:
+  level:
+    org.activiti: INFO
+    org.hibernate.SQL: ERROR
+info:
+  component: SpringBoot Activiti Example
+  build:
+    name: ${project.name:HireProcessApp}
+    description: ${project.description:SpringBoot Activiti Example}
+    version: ${project.version:1.0.0-SNAPSHOT}
+    group: ${project.groupId:org.activiti}
+    artifact: ${project.artifactId:activiti-example}
+
+---
+spring:
+  profiles: local
+  datasource:
+    platform: h2
+  
+---
+spring:
+  profiles: cloud
+  datasource:
+    platform: mysql 

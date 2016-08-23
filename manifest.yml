@@ -1,0 +1,11 @@
+---
+timeout: 180
+memory: 768M
+env:
+    spring.datasource.platform: mysql
+instances: 2
+applications:
+ - name: ActivitiExample
+   random-route: true
+   path: target/activiti-example-1.0.0-SNAPSHOT.jar
+   services: [ activiti-db ]
