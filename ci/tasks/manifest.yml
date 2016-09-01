@@ -1,5 +1,5 @@
 ---
-timeout: 600
+timeout: 180
 memory: 768M
 env:
     spring.datasource.platform: mysql
