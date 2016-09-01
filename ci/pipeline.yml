@@ -17,7 +17,7 @@ resources:
 - name: demo-release
   type: s3
   source:
-    bucket: ci-pcf-workshop-artifacts
+    bucket: pcf-workshop-artifacts
     regexp: activiti-example-(.*).jar
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
