@@ -8,7 +8,7 @@ resources:
 - name: version
   type: semver
   source:
-    bucket: ci-pcf-workshop-artifacts
+    bucket: pcf-workshop-artifacts
     key: activiti-demo-current-version
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
