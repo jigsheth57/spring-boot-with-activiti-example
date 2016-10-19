@@ -4,7 +4,7 @@ spring:
       ddl-auto: create
 logging:
   level:
-    org.activiti: INFO
+    org.activiti: DEBUG
     org.hibernate.SQL: ERROR
 info:
   component: SpringBoot Activiti Example

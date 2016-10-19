@@ -42,13 +42,13 @@ public class HireProcessService {
 
         Map<String, Object> vars = Collections.<String, Object>singletonMap("applicant", applicant);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
-        
+
         String pid = processInstance.getProcessInstanceId();
         log.info("Instance ID: "+env.getProperty("CF_INSTANCE_INDEX"));
         log.info("Process Instance ID: "+pid);
         // Verify that we started a new process instance
         log.info("Number of process instances: " + runtimeService.createProcessInstanceQuery().count());
-        
+
         return pid;
     }
 
@@ -61,7 +61,7 @@ public class HireProcessService {
                 .list();
         return tasks;
     }
-	
+
 	@Transactional
 	public void completeTelephoneInterview(String pid, Map<String, Object> taskVariables) {
         log.info("Instance ID: "+env.getProperty("CF_INSTANCE_INDEX"));

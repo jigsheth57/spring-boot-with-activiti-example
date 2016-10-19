@@ -2,10 +2,10 @@
 timeout: 180
 memory: 768M
 env:
-    spring.datasource.platform: mysql
-instances: 2
+    spring.profiles.active: cloud
+instances: 1 
 applications:
- - name: ActivitiExample
-   random-route: true
+ - name: activiti-example
+   host: hireprocess
    path: target/activiti-example-1.0.0-SNAPSHOT.jar
-   services: [ activiti-db ]
+   services: [ activitiDB ]

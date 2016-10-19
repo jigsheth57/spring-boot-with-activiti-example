@@ -1,14 +1,16 @@
 # Test the app
 
-curl -u admin:admin -H "Content-Type: application/json" -d '{"name":"John Doe", "email": "john.doe@alfresco.com", "phoneNumber":"123456789"}' http://activitiexample-dev.cfapps.io/startProcess
+curl -u kermit:kermit -H "Content-Type: application/json" -d '{"name":"John Doe", "email": "john.doe@alfresco.com", "phoneNumber":"123456789"}' http://hireprocess.local.pcfdev.io/startProcess
 
-curl -u admin:admin -H "Content-Type: application/json" -d '{"telephoneInterviewOutcome" : "true"}' http://activitiexample-dev.cfapps.io/completeTelephoneInterview/2501
+curl -u kermit:kermit http://hireprocess.local.pcfdev.io/runtime/tasks
 
-curl -u admin:admin -H "Content-Type: application/json" -d '{"techOk" : "true"}' http://activitiexample-dev.cfapps.io/completeTechInterview/2501
+curl -u kermit:kermit -H "Content-Type: application/json" -d '{"telephoneInterviewOutcome":true}' http://hireprocess.local.pcfdev.io/completeTelephoneInterview/2501
 
-curl -u admin:admin -H "Content-Type: application/json" -d '{"financialOk" : "false"}' http://activitiexample-dev.cfapps.io/completeFinancialNegotiation/2501
+curl -u kermit:kermit -H "Content-Type: application/json" -d '{"techOk" : "true"}' http://hireprocess.local.pcfdev.io/completeTechInterview/2501
 
-curl -u admin:admin http://activitiexample-dev.cfapps.io/tasks/2501
+curl -u kermit:kermit -H "Content-Type: application/json" -d '{"financialOk" : "false"}' http://hireprocess.local.pcfdev.io/completeFinancialNegotiation/2501
+
+curl -u kermit:kermit http://hireprocess.local.pcfdev.io/tasks/2501
 
 /history/historic-activity-instances
 /runtime/process-instances
